@@ -62,7 +62,10 @@ print(union2("HAM", "EGG", "SPAM"))
 #람다 함수 : 이름이 없고 함수 객체만 존재하는 익명 함수
 #문법 = [lambda 인자 : 구문]
 g = lambda x,y : x*y
-print(g(2,3))
+print(g(2,3))   #6
 
 h = (lambda x : x*x)(3)
-print(h)
+print(h)        #9
+
+print((lambda x : x*x)(3))
+print(globals())
