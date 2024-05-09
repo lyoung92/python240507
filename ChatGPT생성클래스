@@ -1,0 +1,63 @@
+class Person:
+    def __init__(self, id, name):
+        self.id = id
+        self.name = name
+    
+    def printInfo(self):
+        print("ID:", self.id)
+        print("Name:", self.name)
+
+
+class Manager(Person):
+    def __init__(self, id, name, title):
+        super().__init__(id, name)
+        self.title = title
+    
+    def printInfo(self):
+        super().printInfo()
+        print("Title:", self.title)
+
+
+class Employee(Person):
+    def __init__(self, id, name, skill):
+        super().__init__(id, name)
+        self.skill = skill
+    
+    def printInfo(self):
+        super().printInfo()
+        print("Skill:", self.skill)
+
+
+# 테스트 코드
+def main():
+    # Person 클래스 테스트
+    person1 = Person(1, "Alice")
+    person1.printInfo()
+    print()
+
+    # Manager 클래스 테스트
+    manager1 = Manager(2, "Bob", "Senior Manager")
+    manager1.printInfo()
+    print()
+
+    # Employee 클래스 테스트
+    employee1 = Employee(3, "Charlie", "Python")
+    employee1.printInfo()
+    print()
+
+    # 추가 테스트
+    # 다형성 테스트
+    persons = [person1, manager1, employee1]
+    for person in persons:
+        person.printInfo()
+        print()
+
+    # Employee와 Manager가 같이 있는 리스트
+    employees = [Employee(4, "Dave", "C++"), Manager(5, "Eva", "Project Manager")]
+    for emp in employees:
+        emp.printInfo()
+        print()
+
+
+if __name__ == "__main__":
+    main()

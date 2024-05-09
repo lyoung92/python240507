@@ -1,0 +1,114 @@
+import turtle
+import random
+
+# 창 설정
+win = turtle.Screen()
+win.title("Block Breaker")
+win.bgcolor("black")
+win.setup(width=600, height=600)
+win.tracer(0)  # 애니메이션을 끔
+
+# 공 설정
+ball = turtle.Turtle()
+ball.shape("circle")
+ball.color("white")
+ball.penup()
+ball.speed(0)
+ball.goto(0, -250)
+ball.dx = 1.5  # x축 이동 속도를 빠르게 설정
+ball.dy = -1.5  # y축 이동 속도를 빠르게 설정
+
+# 바 설정
+paddle = turtle.Turtle()
+paddle.shape("square")
+paddle.color("white")
+paddle.shapesize(stretch_wid=1, stretch_len=5)
+paddle.penup()
+paddle.speed(1000)
+paddle.goto(0, -280)
+
+# 벽돌 설정
+bricks = []
+colors = ["red", "orange", "yellow", "green", "blue"]
+for i in range(-200, 200, 50):
+    for j in range(100, 250, 50):
+        brick = turtle.Turtle()
+        brick.shape("square")
+        brick.color(random.choice(colors))
+        brick.penup()
+        brick.speed(0)
+        brick.goto(i, j)
+        bricks.append(brick)
+
+# 패들 좌우 이동 함수
+def paddle_right():
+    x = paddle.xcor()
+    if x < 250:
+        paddle.setx(x + 30)
+
+def paddle_left():
+    x = paddle.xcor()
+    if x > -250:
+        paddle.setx(x - 30)
+
+# 충돌 검사 함수
+def is_collision(obj1, obj2):
+    distance = obj1.distance(obj2)
+    if distance < 30:
+        return True
+    else:
+        return False
+
+# 키 바인딩
+win.listen()
+win.onkeypress(paddle_right, "Right")
+win.onkeypress(paddle_left, "Left")
+
+# 메인 루프
+try:
+    while True:
+        win.update()
+
+        # 공 이동
+        ball.setx(ball.xcor() + ball.dx)
+        ball.sety(ball.ycor() + ball.dy)
+
+        # 화면 밖으로 나가는 경우 처리
+        if ball.xcor() > 290:
+            ball.setx(290)
+            ball.dx *= -1
+        if ball.xcor() < -290:
+            ball.setx(-290)
+            ball.dx *= -1
+        if ball.ycor() > 290:
+            ball.sety(290)
+            ball.dy *= -1
+
+        # 공과 패들 충돌 처리
+        if (ball.ycor() < -270) and (paddle.xcor() - 50 < ball.xcor() < paddle.xcor() + 50):
+            ball.dy *= -1
+
+        # 공과 벽돌 충돌 처리
+        for brick in bricks:
+            if is_collision(ball, brick) and brick.isvisible():
+                brick.hideturtle()
+                ball.dy *= -1
+
+        # 게임 종료 조건
+        if ball.ycor() < -300:
+            break
+
+except turtle.Terminator:
+    pass
+
+finally:
+    # 게임 종료 메시지 출력
+    game_over = turtle.Turtle()
+    game_over.color("white")
+    game_over.penup()
+    game_over.hideturtle()
+    game_over.goto(0, 0)
+    game_over.write("Game Over", align="center", font=("Courier", 24, "normal"))
+
+    # 종료 전 창 유지
+    win.mainloop()

@@ -15,5 +15,3 @@ def union(*tp):
             if not x in result:
                 result.append(x)
     return result
-
-
