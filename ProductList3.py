@@ -123,5 +123,3 @@ myWindow = Window()
 myWindow.show()
 app.exec_()
 
-
-
